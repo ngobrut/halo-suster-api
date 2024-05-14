@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"net/http"
+	"strconv"
 
 	"github.com/google/uuid"
 	"github.com/ngobrut/halo-suster-api/constant"
@@ -22,7 +23,7 @@ func (u *Usecase) Register(ctx context.Context, req *request.Register) (*respons
 	}
 
 	user := &model.User{
-		NIP:      req.NIP,
+		NIP:      strconv.Itoa(req.NIP),
 		Name:     req.Name,
 		Password: sql.NullString{String: pwd, Valid: true},
 		Role:     constant.UserRoleIT,
@@ -43,10 +44,17 @@ func (u *Usecase) Register(ctx context.Context, req *request.Register) (*respons
 		return nil, err
 	}
 
+	nip, err := strconv.Atoi(user.NIP)
+	if err != nil {
+		return nil, custom_error.SetCustomError(&custom_error.ErrorContext{
+			HTTPCode: http.StatusInternalServerError,
+			Message:  constant.HTTPStatusText(http.StatusInternalServerError),
+		})
+	}
 	res := &response.AuthResponse{
 		UserID:      user.UserID,
 		Name:        user.Name,
-		NIP:         user.NIP,
+		NIP:         nip,
 		AccessToken: token,
 	}
 
@@ -55,17 +63,8 @@ func (u *Usecase) Register(ctx context.Context, req *request.Register) (*respons
 
 // Login implements IFaceUsecase.
 func (u *Usecase) Login(ctx context.Context, req *request.Login) (*response.AuthResponse, error) {
-	user, err := u.repo.FindOneUserByNIP(ctx, req.NIP)
+	user, err := u.repo.FindOneUserByNIP(ctx, strconv.Itoa(req.NIP))
 	if err != nil {
-		return nil, err
-	}
-
-	if user.Password.String == "" || (req.UserRole != user.Role) {
-		err = custom_error.SetCustomError(&custom_error.ErrorContext{
-			HTTPCode: http.StatusUnauthorized,
-			Message:  "you don't have the right to access this api",
-		})
-
 		return nil, err
 	}
 
@@ -89,10 +88,18 @@ func (u *Usecase) Login(ctx context.Context, req *request.Login) (*response.Auth
 		return nil, err
 	}
 
+	nip, err := strconv.Atoi(user.NIP)
+	if err != nil {
+		return nil, custom_error.SetCustomError(&custom_error.ErrorContext{
+			HTTPCode: http.StatusInternalServerError,
+			Message:  constant.HTTPStatusText(http.StatusInternalServerError),
+		})
+	}
+
 	res := &response.AuthResponse{
 		UserID:      user.UserID,
 		Name:        user.Name,
-		NIP:         user.NIP,
+		NIP:         nip,
 		AccessToken: token,
 	}
 

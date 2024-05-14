@@ -3,6 +3,7 @@ package repository
 import (
 	"strings"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/ngobrut/halo-suster-api/config"
 )
@@ -24,5 +25,5 @@ func IsDuplicateError(err error) bool {
 }
 
 func IsRecordNotFound(err error) bool {
-	return strings.Contains(err.Error(), "no rows in result set")
+	return err == pgx.ErrNoRows
 }

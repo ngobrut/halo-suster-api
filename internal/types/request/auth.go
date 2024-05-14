@@ -3,13 +3,13 @@ package request
 import "github.com/ngobrut/halo-suster-api/constant"
 
 type Register struct {
-	NIP      string `json:"nip" validate:"required"`
-	Name     string `json:"name" validate:"required"`
-	Password string `json:"password" validate:"required"`
+	NIP      int    `json:"nip" validate:"required,nipLen"`
+	Name     string `json:"name" validate:"required,min=5,max=50"`
+	Password string `json:"password" validate:"required,min=5,max=33"`
 }
 
 type Login struct {
-	NIP      string            `json:"nip" validate:"required"`
-	Password string            `json:"password" validate:"required"`
+	NIP      int               `json:"nip" validate:"required,nipLen"`
+	Password string            `json:"password" validate:"required,min=5,max=33"`
 	UserRole constant.UserRole `json:"-"`
 }

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 
 	"github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"
@@ -56,6 +57,7 @@ func (h Handler) ValidateStruct(r *http.Request, data interface{}) error {
 	uni := ut.New(eng, eng)
 	trans, _ := uni.GetTranslator("en")
 	_ = en_translations.RegisterDefaultTranslations(validate, trans)
+	validate.RegisterValidation("nipLen", validateNipLen)
 
 	err = validate.Struct(data)
 	if err == nil {
@@ -66,6 +68,12 @@ func (h Handler) ValidateStruct(r *http.Request, data interface{}) error {
 	var details = make([]string, 0)
 	for _, field := range err.(validator.ValidationErrors) {
 		message = field.Translate(trans)
+
+		switch field.Tag() {
+		case "nipLen":
+			message = "NIP should be 13 char"
+		}
+
 		details = append(details, message)
 	}
 
@@ -76,6 +84,51 @@ func (h Handler) ValidateStruct(r *http.Request, data interface{}) error {
 	}
 
 	return err
+}
+
+func validateNipLen(fl validator.FieldLevel) bool {
+	nip := strconv.Itoa(fl.Field().Interface().(int))
+	return len(nip) == 13
+}
+
+func ValidateNipNurse(n int) bool {
+	nip := strconv.Itoa(n)
+	if nip[0:3] != "303" {
+		return true
+	}
+	if nip[3:4] != "1" && nip[3:4] != "2" {
+		return true
+	}
+	if nip[4:8] < "2000" || nip[4:8] > "2024" {
+		return true
+	}
+	if nip[8:10] < "01" || nip[8:10] > "12" {
+		return true
+	}
+	if nip[10:13] < "000" || nip[10:13] > "999" {
+		return true
+	}
+	return false
+}
+
+func ValidateNipIt(n int) bool {
+	nip := strconv.Itoa(n)
+	if nip[0:3] != "615" {
+		return true
+	}
+	if nip[3:4] != "1" && nip[3:4] != "2" {
+		return true
+	}
+	if nip[4:8] < "2000" || nip[4:8] > "2024" {
+		return true
+	}
+	if nip[8:10] < "01" || nip[8:10] > "12" {
+		return true
+	}
+	if nip[10:13] < "000" || nip[10:13] > "999" {
+		return true
+	}
+	return false
 }
 
 func (h Handler) ResponseOK(w http.ResponseWriter, code int, data interface{}) {
