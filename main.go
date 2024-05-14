@@ -31,11 +31,14 @@ func exec() error {
 		return err
 	}
 
-	s3Client := aws.NewS3(cnf.AWS)
+	awsClient, err := aws.NewAWSClient(cnf.AWS)
+	if err != nil {
+		return err
+	}
 
 	repo := repository.New(cnf, db)
-	uc := usecase.New(cnf, db, repo)
-	handler := http_handler.InitHTTPHandler(cnf, uc, s3Client)
+	uc := usecase.New(cnf, db, repo, awsClient)
+	handler := http_handler.InitHTTPHandler(cnf, uc)
 
 	httpServer := &http.Server{
 		Addr:              addr,

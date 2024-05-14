@@ -9,6 +9,7 @@ import (
 	aws_config "github.com/aws/aws-sdk-go-v2/config"
 	aws_manager "github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	aws_s3 "github.com/aws/aws-sdk-go-v2/service/s3"
+	aws_types "github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/google/uuid"
 	"github.com/ngobrut/halo-suster-api/config"
@@ -62,9 +63,10 @@ func (a *AWS) UploadFile(ctx context.Context, file *multipart.FileHeader) (*Uplo
 		Bucket:      aws.String(a.cnf.Bucket),
 		Body:        f,
 		ContentType: aws.String(mimetype),
+		ACL:         aws_types.ObjectCannedACLPublicRead,
 	}
 
-	result, err := a.uploader.Upload(context.TODO(), fileobj)
+	result, err := a.uploader.Upload(ctx, fileobj)
 	if err != nil {
 		return nil, err
 	}

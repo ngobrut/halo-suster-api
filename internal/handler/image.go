@@ -20,7 +20,7 @@ func (h Handler) UploadImage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	file, header, err := r.FormFile("file")
+	_, header, err := r.FormFile("file")
 	if err != nil {
 		if errors.Is(err, http.ErrMissingFile) {
 			err = custom_error.SetCustomError(&custom_error.ErrorContext{
@@ -61,7 +61,7 @@ func (h Handler) UploadImage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err := h.s3.Upload(file, header)
+	res, err := h.uc.UploadImage(r.Context(), header)
 	if err != nil {
 		h.ResponseError(w, err)
 		return

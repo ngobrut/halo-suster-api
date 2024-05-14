@@ -7,16 +7,14 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 	"github.com/ngobrut/halo-suster-api/config"
-	"github.com/ngobrut/halo-suster-api/infra/aws"
 	"github.com/ngobrut/halo-suster-api/internal/middleware"
 	"github.com/ngobrut/halo-suster-api/internal/types/response"
 	"github.com/ngobrut/halo-suster-api/internal/usecase"
 )
 
-func InitHTTPHandler(cnf config.Config, uc usecase.IFaceUsecase, s3 aws.S3) http.Handler {
+func InitHTTPHandler(cnf config.Config, uc usecase.IFaceUsecase) http.Handler {
 	h := Handler{
 		uc: uc,
-		s3: s3,
 	}
 
 	r := chi.NewRouter()
