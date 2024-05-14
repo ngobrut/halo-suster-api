@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS patients (
     gender varchar(50) not null,
     identity_card_scan_img text not null,
     created_at timestamp default now()
-)
+);
 
 CREATE UNIQUE INDEX IF NOT EXISTS patients_number_idx ON patients (identity_number);
 
