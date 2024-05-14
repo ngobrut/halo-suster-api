@@ -1,1 +1,1 @@
-# halo-sus-api
+# halo-suster-api

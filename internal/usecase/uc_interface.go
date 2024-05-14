@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/ngobrut/halo-sus-api/internal/model"
-	"github.com/ngobrut/halo-sus-api/internal/types/request"
-	"github.com/ngobrut/halo-sus-api/internal/types/response"
+	"github.com/ngobrut/halo-suster-api/internal/model"
+	"github.com/ngobrut/halo-suster-api/internal/types/request"
+	"github.com/ngobrut/halo-suster-api/internal/types/response"
 )
 
 type IFaceUsecase interface {

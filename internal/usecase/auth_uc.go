@@ -6,12 +6,12 @@ import (
 	"net/http"
 
 	"github.com/google/uuid"
-	"github.com/ngobrut/halo-sus-api/constant"
-	"github.com/ngobrut/halo-sus-api/internal/custom_error"
-	"github.com/ngobrut/halo-sus-api/internal/model"
-	"github.com/ngobrut/halo-sus-api/internal/types/request"
-	"github.com/ngobrut/halo-sus-api/internal/types/response"
-	"github.com/ngobrut/halo-sus-api/util"
+	"github.com/ngobrut/halo-suster-api/constant"
+	"github.com/ngobrut/halo-suster-api/internal/custom_error"
+	"github.com/ngobrut/halo-suster-api/internal/model"
+	"github.com/ngobrut/halo-suster-api/internal/types/request"
+	"github.com/ngobrut/halo-suster-api/internal/types/response"
+	"github.com/ngobrut/halo-suster-api/util"
 )
 
 // Register implements IFaceUsecase.

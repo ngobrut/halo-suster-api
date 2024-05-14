@@ -12,10 +12,10 @@ import (
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	en_translations "github.com/go-playground/validator/v10/translations/en"
-	"github.com/ngobrut/halo-sus-api/constant"
-	"github.com/ngobrut/halo-sus-api/internal/custom_error"
-	"github.com/ngobrut/halo-sus-api/internal/types/response"
-	"github.com/ngobrut/halo-sus-api/internal/usecase"
+	"github.com/ngobrut/halo-suster-api/constant"
+	"github.com/ngobrut/halo-suster-api/internal/custom_error"
+	"github.com/ngobrut/halo-suster-api/internal/types/response"
+	"github.com/ngobrut/halo-suster-api/internal/usecase"
 )
 
 type ValidatorError struct {

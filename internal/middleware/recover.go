@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"runtime"
 
-	"github.com/ngobrut/halo-sus-api/constant"
-	"github.com/ngobrut/halo-sus-api/internal/types/response"
+	"github.com/ngobrut/halo-suster-api/constant"
+	"github.com/ngobrut/halo-suster-api/internal/types/response"
 )
 
 func Recover(h http.Handler) http.Handler {

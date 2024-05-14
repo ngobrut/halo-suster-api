@@ -3,7 +3,7 @@ package custom_error
 import (
 	"net/http"
 
-	"github.com/ngobrut/halo-sus-api/constant"
+	"github.com/ngobrut/halo-suster-api/constant"
 )
 
 type CustomError struct {

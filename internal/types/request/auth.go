@@ -1,6 +1,6 @@
 package request
 
-import "github.com/ngobrut/halo-sus-api/constant"
+import "github.com/ngobrut/halo-suster-api/constant"
 
 type Register struct {
 	NIP      string `json:"nip" validate:"required"`

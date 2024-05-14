@@ -5,10 +5,10 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/ngobrut/halo-sus-api/config"
-	"github.com/ngobrut/halo-sus-api/internal/middleware"
-	"github.com/ngobrut/halo-sus-api/internal/types/response"
-	"github.com/ngobrut/halo-sus-api/internal/usecase"
+	"github.com/ngobrut/halo-suster-api/config"
+	"github.com/ngobrut/halo-suster-api/internal/middleware"
+	"github.com/ngobrut/halo-suster-api/internal/types/response"
+	"github.com/ngobrut/halo-suster-api/internal/usecase"
 )
 
 func InitHTTPHandler(cnf config.Config, uc usecase.IFaceUsecase) http.Handler {

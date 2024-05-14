@@ -2,8 +2,8 @@ package usecase
 
 import (
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/ngobrut/halo-sus-api/config"
-	"github.com/ngobrut/halo-sus-api/internal/repository"
+	"github.com/ngobrut/halo-suster-api/config"
+	"github.com/ngobrut/halo-suster-api/internal/repository"
 )
 
 type Usecase struct {

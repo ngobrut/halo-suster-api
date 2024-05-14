@@ -1,4 +1,4 @@
-module github.com/ngobrut/halo-sus-api
+module github.com/ngobrut/halo-suster-api
 
 go 1.22.2
 

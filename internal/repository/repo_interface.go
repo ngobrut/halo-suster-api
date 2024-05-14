@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/ngobrut/halo-sus-api/internal/model"
+	"github.com/ngobrut/halo-suster-api/internal/model"
 )
 
 type IFaceRepository interface {

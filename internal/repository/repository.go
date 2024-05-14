@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/ngobrut/halo-sus-api/config"
+	"github.com/ngobrut/halo-suster-api/config"
 )
 
 type Repository struct {

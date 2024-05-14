@@ -9,11 +9,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/ngobrut/halo-sus-api/config"
-	"github.com/ngobrut/halo-sus-api/database"
-	http_handler "github.com/ngobrut/halo-sus-api/internal/handler"
-	"github.com/ngobrut/halo-sus-api/internal/repository"
-	"github.com/ngobrut/halo-sus-api/internal/usecase"
+	"github.com/ngobrut/halo-suster-api/config"
+	"github.com/ngobrut/halo-suster-api/database"
+	http_handler "github.com/ngobrut/halo-suster-api/internal/handler"
+	"github.com/ngobrut/halo-suster-api/internal/repository"
+	"github.com/ngobrut/halo-suster-api/internal/usecase"
 	"github.com/sirupsen/logrus"
 )
 

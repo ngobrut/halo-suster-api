@@ -8,9 +8,9 @@ import (
 	"strings"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/ngobrut/halo-sus-api/constant"
-	"github.com/ngobrut/halo-sus-api/internal/types/response"
-	"github.com/ngobrut/halo-sus-api/util"
+	"github.com/ngobrut/halo-suster-api/constant"
+	"github.com/ngobrut/halo-suster-api/internal/types/response"
+	"github.com/ngobrut/halo-suster-api/util"
 )
 
 func Authorize(secret string) func(h http.Handler) http.Handler {

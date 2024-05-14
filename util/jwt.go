@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/ngobrut/halo-sus-api/constant"
+	"github.com/ngobrut/halo-suster-api/constant"
 )
 
 type CustomClaims struct {

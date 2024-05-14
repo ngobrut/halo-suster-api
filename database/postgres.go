@@ -7,7 +7,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/ngobrut/halo-sus-api/config"
+	"github.com/ngobrut/halo-suster-api/config"
 	"github.com/sirupsen/logrus"
 )
 

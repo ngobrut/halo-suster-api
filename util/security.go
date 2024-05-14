@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/ngobrut/halo-sus-api/internal/custom_error"
+	"github.com/ngobrut/halo-suster-api/internal/custom_error"
 	"golang.org/x/crypto/bcrypt"
 )
 
