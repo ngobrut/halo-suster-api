@@ -11,6 +11,7 @@ import (
 
 	"github.com/ngobrut/halo-suster-api/config"
 	"github.com/ngobrut/halo-suster-api/database"
+	"github.com/ngobrut/halo-suster-api/infra/aws"
 	http_handler "github.com/ngobrut/halo-suster-api/internal/handler"
 	"github.com/ngobrut/halo-suster-api/internal/repository"
 	"github.com/ngobrut/halo-suster-api/internal/usecase"
@@ -30,9 +31,11 @@ func exec() error {
 		return err
 	}
 
+	s3Client := aws.NewS3(cnf.AWS)
+
 	repo := repository.New(cnf, db)
 	uc := usecase.New(cnf, db, repo)
-	handler := http_handler.InitHTTPHandler(cnf, uc)
+	handler := http_handler.InitHTTPHandler(cnf, uc, s3Client)
 
 	httpServer := &http.Server{
 		Addr:              addr,

@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -43,7 +44,7 @@ func RequestLogger(h http.Handler) http.Handler {
 				log.Printf("[error-body.Close()] \n%v\n", err)
 			}
 
-			if len(b) > 0 {
+			if !strings.Contains(r.RequestURI, "image") && len(b) > 0 {
 				log.Printf(`{"@request":%s}`, string(b))
 			}
 		}()

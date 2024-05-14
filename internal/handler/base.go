@@ -13,6 +13,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	en_translations "github.com/go-playground/validator/v10/translations/en"
 	"github.com/ngobrut/halo-suster-api/constant"
+	"github.com/ngobrut/halo-suster-api/infra/aws"
 	"github.com/ngobrut/halo-suster-api/internal/custom_error"
 	"github.com/ngobrut/halo-suster-api/internal/types/response"
 	"github.com/ngobrut/halo-suster-api/internal/usecase"
@@ -30,6 +31,7 @@ func (e ValidatorError) Error() string {
 
 type Handler struct {
 	uc usecase.IFaceUsecase
+	s3 aws.S3
 }
 
 func (h Handler) ValidateStruct(r *http.Request, data interface{}) error {

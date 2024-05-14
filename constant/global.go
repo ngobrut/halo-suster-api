@@ -9,6 +9,10 @@ const (
 	RoleKey   JwtKey = "role"
 )
 
+const (
+	FILE_UPLOAD_MAX_SIZE int64 = 1024 * 1024 * 2 // 2MB
+)
+
 func HTTPStatusText(code int) string {
 	switch code {
 	case http.StatusInternalServerError:

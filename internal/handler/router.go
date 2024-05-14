@@ -5,18 +5,24 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/render"
 	"github.com/ngobrut/halo-suster-api/config"
+	"github.com/ngobrut/halo-suster-api/infra/aws"
 	"github.com/ngobrut/halo-suster-api/internal/middleware"
 	"github.com/ngobrut/halo-suster-api/internal/types/response"
 	"github.com/ngobrut/halo-suster-api/internal/usecase"
 )
 
-func InitHTTPHandler(cnf config.Config, uc usecase.IFaceUsecase) http.Handler {
-	h := Handler{uc: uc}
+func InitHTTPHandler(cnf config.Config, uc usecase.IFaceUsecase, s3 aws.S3) http.Handler {
+	h := Handler{
+		uc: uc,
+		s3: s3,
+	}
 
 	r := chi.NewRouter()
 	r.Use(middleware.RequestLogger)
 	r.Use(middleware.Recover)
+	r.Use(render.SetContentType(render.ContentTypeJSON))
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
