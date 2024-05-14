@@ -1,0 +1,3 @@
+DROP INDEX IF EXISTS user_nip_idx;
+
+DROP TABLE IF EXISTS users;
