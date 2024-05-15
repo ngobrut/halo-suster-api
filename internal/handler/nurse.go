@@ -2,7 +2,6 @@ package handler
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/google/uuid"
 	"github.com/ngobrut/halo-suster-api/constant"
@@ -45,15 +44,6 @@ func (h Handler) UpdateNurse(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	req.UserID = userID
-
-	if strconv.Itoa(req.NIP)[0:3] != "303" {
-		err = custom_error.SetCustomError(&custom_error.ErrorContext{
-			HTTPCode: http.StatusNotFound,
-			Message:  "user is not found / user is not from Nurse (nip not starts with 303)",
-		})
-		h.ResponseError(w, err)
-		return
-	}
 
 	err = h.uc.UpdateNurse(r.Context(), &req)
 	if err != nil {

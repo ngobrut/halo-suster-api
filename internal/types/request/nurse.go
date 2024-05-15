@@ -13,7 +13,7 @@ type CreateNurse struct {
 }
 
 type UpdateNurse struct {
-	NIP    int       `json:"nip" validate:"required,nipLen"`
+	NIP    int       `json:"nip" validate:"required,nipNurse"`
 	Name   string    `json:"name" validate:"required,min=5,max=50"`
 	UserID uuid.UUID `json:"-"`
 }

@@ -47,6 +47,13 @@ func (u *Usecase) UpdateNurse(ctx context.Context, req *request.UpdateNurse) err
 	if err != nil {
 		return err
 	}
+	if nurse.Role != constant.UserRoleNurse {
+		return custom_error.SetCustomError(&custom_error.ErrorContext{
+			HTTPCode: http.StatusNotFound,
+			Message:  "user is not found / user is not from Nurse (nip not starts with 303)",
+		})
+	}
+
 	nurse.NIP = strconv.Itoa(req.NIP)
 	nurse.Name = req.Name
 	nurse.UpdatedAt = time.Now()

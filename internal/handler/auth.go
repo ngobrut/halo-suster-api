@@ -2,11 +2,9 @@ package handler
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/google/uuid"
 	"github.com/ngobrut/halo-suster-api/constant"
-	"github.com/ngobrut/halo-suster-api/internal/custom_error"
 	"github.com/ngobrut/halo-suster-api/internal/types/request"
 	"github.com/ngobrut/halo-suster-api/util"
 )
@@ -32,15 +30,6 @@ func (h Handler) LoginIT(w http.ResponseWriter, r *http.Request) {
 	var req request.Login
 	err := h.ValidateStruct(r, &req)
 	if err != nil {
-		h.ResponseError(w, err)
-		return
-	}
-
-	if strconv.Itoa(req.NIP)[0:3] != "615" {
-		err = custom_error.SetCustomError(&custom_error.ErrorContext{
-			HTTPCode: http.StatusNotFound,
-			Message:  "user is not found / user is not from IT (nip not starts with 615)",
-		})
 		h.ResponseError(w, err)
 		return
 	}

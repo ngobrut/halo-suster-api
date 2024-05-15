@@ -9,7 +9,7 @@ type Register struct {
 }
 
 type Login struct {
-	NIP      int               `json:"nip" validate:"required,nipLen"`
+	NIP      int               `json:"nip" validate:"required,nipIt"`
 	Password string            `json:"password" validate:"required,min=5,max=33"`
 	UserRole constant.UserRole `json:"-"`
 }
