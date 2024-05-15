@@ -5,13 +5,14 @@ import (
 	"database/sql"
 	"net/http"
 	"strconv"
-	"time"
 
+	"github.com/google/uuid"
 	"github.com/ngobrut/halo-suster-api/constant"
 	"github.com/ngobrut/halo-suster-api/internal/custom_error"
 	"github.com/ngobrut/halo-suster-api/internal/model"
 	"github.com/ngobrut/halo-suster-api/internal/types/request"
 	"github.com/ngobrut/halo-suster-api/internal/types/response"
+	"github.com/ngobrut/halo-suster-api/util"
 )
 
 func (u *Usecase) CreateNurse(ctx context.Context, req *request.CreateNurse) (*response.CreateNurse, error) {
@@ -54,11 +55,59 @@ func (u *Usecase) UpdateNurse(ctx context.Context, req *request.UpdateNurse) err
 		})
 	}
 
-	nurse.NIP = strconv.Itoa(req.NIP)
-	nurse.Name = req.Name
-	nurse.UpdatedAt = time.Now()
+	err = u.repo.UpdateNurse(ctx, req)
+	if err != nil {
+		return err
+	}
 
-	err = u.repo.UpdateNurse(ctx, nurse)
+	return nil
+}
+
+func (u *Usecase) DeleteNurse(ctx context.Context, userID uuid.UUID) error {
+	nurse, err := u.repo.FindOneUserByID(ctx, userID)
+	if err != nil {
+		return custom_error.SetCustomError(&custom_error.ErrorContext{
+			HTTPCode: http.StatusBadRequest,
+			Message:  "userId is not a nurse (nip not starts with 303)",
+		})
+	}
+	if nurse.Role != constant.UserRoleNurse {
+		return custom_error.SetCustomError(&custom_error.ErrorContext{
+			HTTPCode: http.StatusBadRequest,
+			Message:  "userId is not a nurse (nip not starts with 303)",
+		})
+	}
+
+	err = u.repo.DeleteNurse(ctx, userID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (u *Usecase) GrantNurseAccess(ctx context.Context, req *request.GrantNurseAccess) error {
+	nurse, err := u.repo.FindOneUserByID(ctx, req.UserID)
+	if err != nil {
+		return custom_error.SetCustomError(&custom_error.ErrorContext{
+			HTTPCode: http.StatusBadRequest,
+			Message:  "userId is not a nurse (nip not starts with 303)",
+		})
+	}
+	if nurse.Role != constant.UserRoleNurse {
+		return custom_error.SetCustomError(&custom_error.ErrorContext{
+			HTTPCode: http.StatusBadRequest,
+			Message:  "userId is not a nurse (nip not starts with 303)",
+		})
+	}
+
+	pwd, err := util.HashPwd(u.cnf.BcryptSalt, []byte(req.Password))
+	if err != nil {
+		return err
+	}
+	req.Password = pwd
+
+	err = u.repo.GrantNurseAccess(ctx, req)
 	if err != nil {
 		return err
 	}

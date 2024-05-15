@@ -17,3 +17,8 @@ type UpdateNurse struct {
 	Name   string    `json:"name" validate:"required,min=5,max=50"`
 	UserID uuid.UUID `json:"-"`
 }
+
+type GrantNurseAccess struct {
+	Password string    `json:"password" validate:"required,min=5,max=33"`
+	UserID   uuid.UUID `json:"-"`
+}

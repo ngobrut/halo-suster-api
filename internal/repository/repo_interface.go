@@ -18,5 +18,7 @@ type IFaceRepository interface {
 
 	// nurse
 	CreateNurse(ctx context.Context, data *model.User) error
-	UpdateNurse(ctx context.Context, data *model.User) error
+	UpdateNurse(ctx context.Context, req *request.UpdateNurse) error
+	DeleteNurse(ctx context.Context, userID uuid.UUID) error
+	GrantNurseAccess(ctx context.Context, req *request.GrantNurseAccess) error
 }
