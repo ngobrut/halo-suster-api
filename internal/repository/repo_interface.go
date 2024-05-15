@@ -12,4 +12,7 @@ type IFaceRepository interface {
 	CreateUser(ctx context.Context, data *model.User) error
 	FindOneUserByNIP(ctx context.Context, nip string) (*model.User, error)
 	FindOneUserByID(ctx context.Context, userID uuid.UUID) (*model.User, error)
+
+	// nurse
+	CreateNurse(ctx context.Context, data *model.User) error
 }

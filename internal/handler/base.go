@@ -7,7 +7,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"strconv"
+	"strings"
 
 	"github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"
@@ -58,6 +60,7 @@ func (h Handler) ValidateStruct(r *http.Request, data interface{}) error {
 	trans, _ := uni.GetTranslator("en")
 	_ = en_translations.RegisterDefaultTranslations(validate, trans)
 	validate.RegisterValidation("nipLen", validateNipLen)
+	validate.RegisterValidation("validUrl", validateURL)
 
 	err = validate.Struct(data)
 	if err == nil {
@@ -72,6 +75,8 @@ func (h Handler) ValidateStruct(r *http.Request, data interface{}) error {
 		switch field.Tag() {
 		case "nipLen":
 			message = "NIP should be 13 char"
+		case "validUrl":
+			message = "should be url"
 		}
 
 		details = append(details, message)
@@ -79,11 +84,42 @@ func (h Handler) ValidateStruct(r *http.Request, data interface{}) error {
 
 	err = ValidatorError{
 		Code:    http.StatusBadRequest,
-		Message: message,
+		Message: "request doesn’t pass validation",
 		Details: details,
 	}
 
 	return err
+}
+
+func validateURL(fl validator.FieldLevel) bool {
+	parsedURL, err := url.Parse(fl.Field().String())
+	if err != nil {
+		return false
+	}
+
+	// Check if the scheme is present and it's http or https
+	if parsedURL.Scheme != "http" && parsedURL.Scheme != "https" {
+		return false
+	}
+
+	// Check if the host is present and it has a valid format
+	if parsedURL.Host == "" {
+		return false
+	}
+
+	// Check if the host has a valid domain format
+	parts := strings.Split(parsedURL.Host, ".")
+	if len(parts) < 2 {
+		return false
+	}
+
+	// Check if the path, if present, is in a valid format
+	if parsedURL.Path != "" && !strings.HasPrefix(parsedURL.Path, "/") {
+		return false
+	}
+
+	// All checks passed, URL is valid
+	return true
 }
 
 func validateNipLen(fl validator.FieldLevel) bool {

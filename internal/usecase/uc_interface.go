@@ -16,6 +16,9 @@ type IFaceUsecase interface {
 	Login(ctx context.Context, req *request.Login) (*response.AuthResponse, error)
 	GetProfile(ctx context.Context, userID uuid.UUID) (*model.User, error)
 
+	// nurse
+	CreateNurse(ctx context.Context, req *request.CreateNurse) (*response.CreateNurse, error)
+
 	// image
 	UploadImage(ctx context.Context, file *multipart.FileHeader) (*response.ImageResponse, error)
 }
