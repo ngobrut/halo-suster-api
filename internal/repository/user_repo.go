@@ -60,7 +60,7 @@ func (r *Repository) FindOneUserByNIP(ctx context.Context, nip string) (*model.U
 	res := &model.User{}
 
 	err := r.db.
-		QueryRow(ctx, "SELECT * FROM users WHERE nip = $1", nip).
+		QueryRow(ctx, "SELECT * FROM users WHERE nip = $1 and deleted_at IS NULL", nip).
 		Scan(
 			&res.UserID,
 			&res.NIP,
@@ -92,7 +92,7 @@ func (r *Repository) FindOneUserByID(ctx context.Context, userID uuid.UUID) (*mo
 	res := &model.User{}
 
 	err := r.db.
-		QueryRow(ctx, "SELECT * FROM users WHERE user_id = $1", userID).
+		QueryRow(ctx, "SELECT * FROM users WHERE user_id = $1 and deleted_at IS NULL", userID).
 		Scan(
 			&res.UserID,
 			&res.NIP,
