@@ -41,3 +41,31 @@ func (r *Repository) CreateNurse(ctx context.Context, data *model.User) error {
 
 	return nil
 }
+
+func (r *Repository) UpdateNurse(ctx context.Context, data *model.User) error {
+	query := `UPDATE users
+		SET nip = @nip, name = @name, updated_at = @updated_at
+		WHERE user_id = @user_id`
+	args := pgx.NamedArgs{
+		"nip":        data.NIP,
+		"name":       data.Name,
+		"updated_at": data.UpdatedAt,
+		"user_id":    data.UserID,
+	}
+
+	_, err := r.db.Exec(ctx, query, args)
+	if err != nil {
+		if IsDuplicateError(err) {
+			return custom_error.SetCustomError(&custom_error.ErrorContext{
+				HTTPCode: http.StatusConflict,
+				Message:  constant.HTTPStatusText(http.StatusConflict),
+			})
+		}
+		return custom_error.SetCustomError(&custom_error.ErrorContext{
+			HTTPCode: http.StatusInternalServerError,
+			Message:  constant.HTTPStatusText(http.StatusInternalServerError),
+		})
+	}
+
+	return nil
+}

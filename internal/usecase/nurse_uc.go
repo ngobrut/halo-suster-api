@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/ngobrut/halo-suster-api/constant"
 	"github.com/ngobrut/halo-suster-api/internal/custom_error"
@@ -39,4 +40,21 @@ func (u *Usecase) CreateNurse(ctx context.Context, req *request.CreateNurse) (*r
 		NIP:    nip,
 	}
 	return res, nil
+}
+
+func (u *Usecase) UpdateNurse(ctx context.Context, req *request.UpdateNurse) error {
+	nurse, err := u.repo.FindOneUserByID(ctx, req.UserID)
+	if err != nil {
+		return err
+	}
+	nurse.NIP = strconv.Itoa(req.NIP)
+	nurse.Name = req.Name
+	nurse.UpdatedAt = time.Now()
+
+	err = u.repo.UpdateNurse(ctx, nurse)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

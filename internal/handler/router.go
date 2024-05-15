@@ -75,9 +75,9 @@ func InitHTTPHandler(cnf config.Config, uc usecase.IFaceUsecase) http.Handler {
 				nurse.Group(func(manageNurse chi.Router) {
 					manageNurse.Use(middleware.Authorize(cnf.JWTSecret, &constant.StrUserRoleIT))
 					manageNurse.Post("/register", h.CreateNurse)
-					manageNurse.Put("/{nurseID}", h.UpdateNurse)
-					manageNurse.Delete("/{nurseID}", h.DeleteNurse)
-					manageNurse.Post("/{nurseID}/access", h.GrantNurseAccess)
+					manageNurse.Put("/{userId}", h.UpdateNurse)
+					manageNurse.Delete("/{userId}", h.DeleteNurse)
+					manageNurse.Post("/{userId}/access", h.GrantNurseAccess)
 				})
 			})
 		})

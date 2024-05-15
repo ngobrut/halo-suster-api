@@ -15,6 +15,8 @@ type IFaceRepository interface {
 	FindOneUserByNIP(ctx context.Context, nip string) (*model.User, error)
 	FindOneUserByID(ctx context.Context, userID uuid.UUID) (*model.User, error)
 	FindUsers(ctx context.Context, params *request.ListUserQuery) ([]*response.ListUser, error)
+
 	// nurse
 	CreateNurse(ctx context.Context, data *model.User) error
+	UpdateNurse(ctx context.Context, data *model.User) error
 }

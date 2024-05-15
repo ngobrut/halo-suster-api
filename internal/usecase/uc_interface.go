@@ -21,6 +21,7 @@ type IFaceUsecase interface {
 
 	// nurse
 	CreateNurse(ctx context.Context, req *request.CreateNurse) (*response.CreateNurse, error)
+	UpdateNurse(ctx context.Context, req *request.UpdateNurse) error
 
 	// image
 	UploadImage(ctx context.Context, file *multipart.FileHeader) (*response.ImageResponse, error)

@@ -2,7 +2,11 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 
+	"github.com/google/uuid"
+	"github.com/ngobrut/halo-suster-api/constant"
+	"github.com/ngobrut/halo-suster-api/internal/custom_error"
 	"github.com/ngobrut/halo-suster-api/internal/types/request"
 )
 
@@ -24,6 +28,39 @@ func (h Handler) CreateNurse(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h Handler) UpdateNurse(w http.ResponseWriter, r *http.Request) {
+	userID, err := uuid.Parse(r.PathValue("userId"))
+	if err != nil {
+		err = custom_error.SetCustomError(&custom_error.ErrorContext{
+			HTTPCode: http.StatusNotFound,
+			Message:  constant.HTTPStatusText(http.StatusNotFound),
+		})
+		h.ResponseError(w, err)
+		return
+	}
+
+	var req request.UpdateNurse
+	err = h.ValidateStruct(r, &req)
+	if err != nil {
+		h.ResponseError(w, err)
+		return
+	}
+	req.UserID = userID
+
+	if strconv.Itoa(req.NIP)[0:3] != "303" {
+		err = custom_error.SetCustomError(&custom_error.ErrorContext{
+			HTTPCode: http.StatusNotFound,
+			Message:  "user is not found / user is not from Nurse (nip not starts with 303)",
+		})
+		h.ResponseError(w, err)
+		return
+	}
+
+	err = h.uc.UpdateNurse(r.Context(), &req)
+	if err != nil {
+		h.ResponseError(w, err)
+		return
+	}
+
 	h.ResponseOK(w, http.StatusOK, nil)
 }
 
