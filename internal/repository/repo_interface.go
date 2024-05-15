@@ -5,6 +5,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/ngobrut/halo-suster-api/internal/model"
+	"github.com/ngobrut/halo-suster-api/internal/types/request"
+	"github.com/ngobrut/halo-suster-api/internal/types/response"
 )
 
 type IFaceRepository interface {
@@ -12,7 +14,7 @@ type IFaceRepository interface {
 	CreateUser(ctx context.Context, data *model.User) error
 	FindOneUserByNIP(ctx context.Context, nip string) (*model.User, error)
 	FindOneUserByID(ctx context.Context, userID uuid.UUID) (*model.User, error)
-
+	FindUsers(ctx context.Context, params *request.ListUserQuery) ([]*response.ListUser, error)
 	// nurse
 	CreateNurse(ctx context.Context, data *model.User) error
 }

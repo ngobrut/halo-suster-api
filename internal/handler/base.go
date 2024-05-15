@@ -179,6 +179,13 @@ func validateNipIt(fl validator.FieldLevel) bool {
 	return true
 }
 
+func StringPtr(s string) *string {
+	if s == "" {
+		return nil
+	}
+	return &s
+}
+
 func (h Handler) ResponseOK(w http.ResponseWriter, code int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
