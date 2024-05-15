@@ -7,6 +7,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 	"github.com/ngobrut/halo-suster-api/config"
+	"github.com/ngobrut/halo-suster-api/constant"
 	"github.com/ngobrut/halo-suster-api/internal/middleware"
 	"github.com/ngobrut/halo-suster-api/internal/types/response"
 	"github.com/ngobrut/halo-suster-api/internal/usecase"
@@ -49,7 +50,7 @@ func InitHTTPHandler(cnf config.Config, uc usecase.IFaceUsecase) http.Handler {
 	r.Route("/v1", func(r chi.Router) {
 		r.Route("/user", func(user chi.Router) {
 			user.Group(func(manageUser chi.Router) {
-				manageUser.Use(middleware.Authorize(cnf.JWTSecret))
+				manageUser.Use(middleware.Authorize(cnf.JWTSecret, &constant.StrUserRoleIT))
 				manageUser.Get("/", h.GetListUser)
 			})
 
@@ -58,7 +59,7 @@ func InitHTTPHandler(cnf config.Config, uc usecase.IFaceUsecase) http.Handler {
 				it.Post("/login", h.LoginIT)
 
 				it.Group(func(profile chi.Router) {
-					profile.Use(middleware.Authorize(cnf.JWTSecret))
+					profile.Use(middleware.Authorize(cnf.JWTSecret, &constant.StrUserRoleIT))
 					profile.Get("/profile", h.GetProfileIT)
 				})
 			})
@@ -67,12 +68,12 @@ func InitHTTPHandler(cnf config.Config, uc usecase.IFaceUsecase) http.Handler {
 				nurse.Post("/login", h.LoginNurse)
 
 				nurse.Group(func(profile chi.Router) {
-					profile.Use(middleware.Authorize(cnf.JWTSecret))
+					profile.Use(middleware.Authorize(cnf.JWTSecret, &constant.StrUserRoleNurse))
 					profile.Get("/profile", h.GetProfileNurse)
 				})
 
 				nurse.Group(func(manageNurse chi.Router) {
-					manageNurse.Use(middleware.Authorize(cnf.JWTSecret))
+					manageNurse.Use(middleware.Authorize(cnf.JWTSecret, &constant.StrUserRoleIT))
 					manageNurse.Post("/register", h.CreateNurse)
 					manageNurse.Put("/{nurseID}", h.UpdateNurse)
 					manageNurse.Delete("/{nurseID}", h.DeleteNurse)
@@ -82,7 +83,7 @@ func InitHTTPHandler(cnf config.Config, uc usecase.IFaceUsecase) http.Handler {
 		})
 
 		r.Route("/medical", func(medical chi.Router) {
-			medical.Use(middleware.Authorize(cnf.JWTSecret))
+			medical.Use(middleware.Authorize(cnf.JWTSecret, nil))
 
 			medical.Route("/patient", func(patient chi.Router) {
 				// todo:
@@ -94,7 +95,7 @@ func InitHTTPHandler(cnf config.Config, uc usecase.IFaceUsecase) http.Handler {
 		})
 
 		r.Route("/image", func(image chi.Router) {
-			image.Use(middleware.Authorize(cnf.JWTSecret))
+			image.Use(middleware.Authorize(cnf.JWTSecret, nil))
 			image.Post("/", h.UploadImage)
 		})
 	})

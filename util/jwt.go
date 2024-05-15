@@ -37,3 +37,15 @@ func GetUserIDFromCtx(ctx context.Context) string {
 
 	return ""
 }
+
+func GetUserRoleFromCtx(ctx context.Context) string {
+	if ctx == nil {
+		return ""
+	}
+
+	if userRole, ok := ctx.Value(constant.RoleKey).(string); ok {
+		return userRole
+	}
+
+	return ""
+}

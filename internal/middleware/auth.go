@@ -13,7 +13,7 @@ import (
 	"github.com/ngobrut/halo-suster-api/util"
 )
 
-func Authorize(secret string) func(h http.Handler) http.Handler {
+func Authorize(secret string, userRole *constant.UserRole) func(h http.Handler) http.Handler {
 	return func(h http.Handler) http.Handler {
 		fn := func(w http.ResponseWriter, r *http.Request) {
 			token, err := GetTokenFromHeader(r)
@@ -37,8 +37,16 @@ func Authorize(secret string) func(h http.Handler) http.Handler {
 				return
 			}
 
+			if userRole != nil {
+				if claims.Role != string(*userRole) {
+					UnauthorizedError(w)
+					return
+				}
+			}
+
 			ctx := r.Context()
 			ctx = context.WithValue(ctx, constant.UserIDKey, claims.UserID)
+			ctx = context.WithValue(ctx, constant.RoleKey, claims.Role)
 			h.ServeHTTP(w, r.WithContext(ctx))
 		}
 
