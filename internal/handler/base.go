@@ -60,6 +60,8 @@ func (h Handler) ValidateStruct(r *http.Request, data interface{}) error {
 	trans, _ := uni.GetTranslator("en")
 	_ = en_translations.RegisterDefaultTranslations(validate, trans)
 	validate.RegisterValidation("nipLen", validateNipLen)
+	validate.RegisterValidation("nipIt", validateNipIt)
+	validate.RegisterValidation("nipNurse", validateNipNurse)
 	validate.RegisterValidation("validUrl", validateURL)
 
 	err = validate.Struct(data)
@@ -75,6 +77,10 @@ func (h Handler) ValidateStruct(r *http.Request, data interface{}) error {
 		switch field.Tag() {
 		case "nipLen":
 			message = "NIP should be 13 char"
+		case "nipIt":
+			message = "NIP should be it Format"
+		case "nipNurse":
+			message = "NIP should be nurse format"
 		case "validUrl":
 			message = "should be url"
 		}
@@ -127,44 +133,50 @@ func validateNipLen(fl validator.FieldLevel) bool {
 	return len(nip) == 13
 }
 
-func ValidateNipNurse(n int) bool {
-	nip := strconv.Itoa(n)
+func validateNipNurse(fl validator.FieldLevel) bool {
+	nip := strconv.Itoa(fl.Field().Interface().(int))
+	if len(nip) != 13 {
+		return false
+	}
 	if nip[0:3] != "303" {
-		return true
+		return false
 	}
 	if nip[3:4] != "1" && nip[3:4] != "2" {
-		return true
+		return false
 	}
 	if nip[4:8] < "2000" || nip[4:8] > "2024" {
-		return true
+		return false
 	}
 	if nip[8:10] < "01" || nip[8:10] > "12" {
-		return true
+		return false
 	}
 	if nip[10:13] < "000" || nip[10:13] > "999" {
-		return true
+		return false
 	}
-	return false
+	return true
 }
 
-func ValidateNipIt(n int) bool {
-	nip := strconv.Itoa(n)
+func validateNipIt(fl validator.FieldLevel) bool {
+	nip := strconv.Itoa(fl.Field().Interface().(int))
+	if len(nip) != 13 {
+		return false
+	}
 	if nip[0:3] != "615" {
-		return true
+		return false
 	}
 	if nip[3:4] != "1" && nip[3:4] != "2" {
-		return true
+		return false
 	}
 	if nip[4:8] < "2000" || nip[4:8] > "2024" {
-		return true
+		return false
 	}
 	if nip[8:10] < "01" || nip[8:10] > "12" {
-		return true
+		return false
 	}
 	if nip[10:13] < "000" || nip[10:13] > "999" {
-		return true
+		return false
 	}
-	return false
+	return true
 }
 
 func (h Handler) ResponseOK(w http.ResponseWriter, code int, data interface{}) {
