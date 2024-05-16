@@ -44,18 +44,7 @@ func (u *Usecase) CreateNurse(ctx context.Context, req *request.CreateNurse) (*r
 }
 
 func (u *Usecase) UpdateNurse(ctx context.Context, req *request.UpdateNurse) error {
-	nurse, err := u.repo.FindOneUserByID(ctx, req.UserID)
-	if err != nil {
-		return err
-	}
-	if nurse.Role != constant.UserRoleNurse {
-		return custom_error.SetCustomError(&custom_error.ErrorContext{
-			HTTPCode: http.StatusNotFound,
-			Message:  "user is not found / user is not from Nurse (nip not starts with 303)",
-		})
-	}
-
-	err = u.repo.UpdateNurse(ctx, req)
+	err := u.repo.UpdateNurse(ctx, req)
 	if err != nil {
 		return err
 	}
@@ -64,21 +53,7 @@ func (u *Usecase) UpdateNurse(ctx context.Context, req *request.UpdateNurse) err
 }
 
 func (u *Usecase) DeleteNurse(ctx context.Context, userID uuid.UUID) error {
-	nurse, err := u.repo.FindOneUserByID(ctx, userID)
-	if err != nil {
-		return custom_error.SetCustomError(&custom_error.ErrorContext{
-			HTTPCode: http.StatusBadRequest,
-			Message:  "userId is not a nurse (nip not starts with 303)",
-		})
-	}
-	if nurse.Role != constant.UserRoleNurse {
-		return custom_error.SetCustomError(&custom_error.ErrorContext{
-			HTTPCode: http.StatusBadRequest,
-			Message:  "userId is not a nurse (nip not starts with 303)",
-		})
-	}
-
-	err = u.repo.DeleteNurse(ctx, userID)
+	err := u.repo.DeleteNurse(ctx, userID)
 	if err != nil {
 		return err
 	}
@@ -87,20 +62,6 @@ func (u *Usecase) DeleteNurse(ctx context.Context, userID uuid.UUID) error {
 }
 
 func (u *Usecase) GrantNurseAccess(ctx context.Context, req *request.GrantNurseAccess) error {
-	nurse, err := u.repo.FindOneUserByID(ctx, req.UserID)
-	if err != nil {
-		return custom_error.SetCustomError(&custom_error.ErrorContext{
-			HTTPCode: http.StatusBadRequest,
-			Message:  "userId is not a nurse (nip not starts with 303)",
-		})
-	}
-	if nurse.Role != constant.UserRoleNurse {
-		return custom_error.SetCustomError(&custom_error.ErrorContext{
-			HTTPCode: http.StatusBadRequest,
-			Message:  "userId is not a nurse (nip not starts with 303)",
-		})
-	}
-
 	pwd, err := util.HashPwd(u.cnf.BcryptSalt, []byte(req.Password))
 	if err != nil {
 		return err
