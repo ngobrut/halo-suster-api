@@ -43,10 +43,10 @@ func New() Config {
 			Params:   os.Getenv("DB_PARAMS"),
 		},
 		AWS: AWS{
-			ID:        os.Getenv("S3_ID"),
-			SecretKey: os.Getenv("S3_SECRET_KEY"),
-			Bucket:    os.Getenv("S3_BUCKET_NAME"),
-			Region:    os.Getenv("S3_REGION"),
+			ID:        os.Getenv("AWS_ACCESS_KEY_ID"),
+			SecretKey: os.Getenv("AWS_SECRET_ACCESS_KEY"),
+			Bucket:    os.Getenv("AWS_S3_BUCKET_NAME"),
+			Region:    os.Getenv("AWS_REGION"),
 		},
 	}
 }

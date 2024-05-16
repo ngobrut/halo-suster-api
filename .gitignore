@@ -22,3 +22,5 @@ go.work
 tmp
 .env
 .DS_Store
+
+aws.json
