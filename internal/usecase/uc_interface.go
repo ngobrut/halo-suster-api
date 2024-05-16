@@ -14,6 +14,7 @@ type IFaceUsecase interface {
 	// auth
 	Register(ctx context.Context, req *request.Register) (*response.AuthResponse, error)
 	Login(ctx context.Context, req *request.Login) (*response.AuthResponse, error)
+	LoginNurse(ctx context.Context, req *request.LoginNurse) (*response.AuthResponse, error)
 	GetProfile(ctx context.Context, userID uuid.UUID) (*model.User, error)
 
 	// user

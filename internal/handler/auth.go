@@ -60,11 +60,11 @@ func (h Handler) GetProfileIT(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.ResponseOK(w, http.StatusCreated, res)
+	h.ResponseOK(w, http.StatusOK, res)
 }
 
 func (h Handler) LoginNurse(w http.ResponseWriter, r *http.Request) {
-	var req request.Login
+	var req request.LoginNurse
 	err := h.ValidateStruct(r, &req)
 	if err != nil {
 		h.ResponseError(w, err)
@@ -73,13 +73,13 @@ func (h Handler) LoginNurse(w http.ResponseWriter, r *http.Request) {
 
 	req.UserRole = constant.UserRoleNurse
 
-	res, err := h.uc.Login(r.Context(), &req)
+	res, err := h.uc.LoginNurse(r.Context(), &req)
 	if err != nil {
 		h.ResponseError(w, err)
 		return
 	}
 
-	h.ResponseOK(w, http.StatusCreated, res)
+	h.ResponseOK(w, http.StatusOK, res)
 }
 
 func (h Handler) GetProfileNurse(w http.ResponseWriter, r *http.Request) {

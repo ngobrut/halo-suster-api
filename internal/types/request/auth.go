@@ -13,3 +13,9 @@ type Login struct {
 	Password string            `json:"password" validate:"required,min=5,max=33"`
 	UserRole constant.UserRole `json:"-"`
 }
+
+type LoginNurse struct {
+	NIP      int               `json:"nip" validate:"required,nipNurse"`
+	Password string            `json:"password" validate:"required,min=5,max=33"`
+	UserRole constant.UserRole `json:"-"`
+}
