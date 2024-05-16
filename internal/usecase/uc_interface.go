@@ -26,6 +26,7 @@ type IFaceUsecase interface {
 
 	// patient
 	CreatePatient(ctx context.Context, req *request.CreatePatient) error
+	GetListPatient(ctx context.Context, params *request.ListPatientQuery) ([]*response.ListPatient, error)
 
 	// image
 	UploadImage(ctx context.Context, file *multipart.FileHeader) (*response.ImageResponse, error)

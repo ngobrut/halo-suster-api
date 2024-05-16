@@ -10,3 +10,12 @@ type CreatePatient struct {
 	Gender              constant.Gender `json:"gender" validate:"required,gender"`
 	IdentityCardScanImg string          `json:"identityCardScanImg" validate:"required,validUrl"`
 }
+
+type ListPatientQuery struct {
+	IdentityNumber *string
+	Limit          *int
+	Offset         *int
+	Name           *string
+	Phone          *string
+	CreatedAt      *string
+}

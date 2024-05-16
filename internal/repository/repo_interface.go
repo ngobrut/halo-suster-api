@@ -24,4 +24,5 @@ type IFaceRepository interface {
 
 	// patient
 	CreatePatient(ctx context.Context, data *model.Patient) (*model.Patient, error)
+	FindPatients(ctx context.Context, params *request.ListPatientQuery) ([]*response.ListPatient, error)
 }
