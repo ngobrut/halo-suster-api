@@ -30,6 +30,7 @@ type IFaceUsecase interface {
 
 	// medical record
 	CreateMedicalRecord(ctx context.Context, req *request.CreateMedicalRecord) error
+	GetListMedicalRecord(ctx context.Context, params *request.ListMedicalRecordQuery) ([]*response.ListMedicalRecord, error)
 
 	// image
 	UploadImage(ctx context.Context, file *multipart.FileHeader) (*response.ImageResponse, error)

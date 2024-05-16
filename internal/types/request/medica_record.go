@@ -8,3 +8,12 @@ type CreateMedicalRecord struct {
 	Medications    string    `json:"medications" validate:"required,min=1,max=2000"`
 	UserID         uuid.UUID `json:"-"`
 }
+
+type ListMedicalRecordQuery struct {
+	IdentityNumber *string
+	UserID         *string
+	NIP            *string
+	Limit          *int
+	Offset         *int
+	CreatedAt      *string
+}

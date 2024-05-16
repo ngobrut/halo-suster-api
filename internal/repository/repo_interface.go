@@ -28,4 +28,5 @@ type IFaceRepository interface {
 
 	// medical record
 	CreateMedicalRecord(ctx context.Context, req *request.CreateMedicalRecord) (*model.MedicalRecord, error)
+	FindMedicalRecords(ctx context.Context, params *request.ListMedicalRecordQuery) ([]*response.ListMedicalRecord, error)
 }

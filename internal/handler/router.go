@@ -92,6 +92,7 @@ func InitHTTPHandler(cnf config.Config, uc usecase.IFaceUsecase) http.Handler {
 
 			medical.Route("/record", func(record chi.Router) {
 				record.Post("/", h.CreateMedicalRecord)
+				record.Get("/", h.GetListMedicalRecord)
 			})
 		})
 
