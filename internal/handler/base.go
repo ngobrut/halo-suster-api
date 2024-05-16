@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"
@@ -63,6 +64,10 @@ func (h Handler) ValidateStruct(r *http.Request, data interface{}) error {
 	validate.RegisterValidation("nipIt", validateNipIt)
 	validate.RegisterValidation("nipNurse", validateNipNurse)
 	validate.RegisterValidation("validUrl", validateURL)
+	validate.RegisterValidation("idNum", validateIDNum)
+	validate.RegisterValidation("phone", validatePhone)
+	validate.RegisterValidation("dateFormat", validateDate)
+	validate.RegisterValidation("gender", validateGender)
 
 	err = validate.Struct(data)
 	if err == nil {
@@ -82,7 +87,15 @@ func (h Handler) ValidateStruct(r *http.Request, data interface{}) error {
 		case "nipNurse":
 			message = "NIP should be nurse format"
 		case "validUrl":
-			message = "should be url"
+			message = "identityCardScanImg should be url"
+		case "idNum":
+			message = "identityNumber should be 16 digit"
+		case "phone":
+			message = "phone should be starts with `+62`"
+		case "dateFormat":
+			message = "should be string with ISO 8601 format"
+		case "gender":
+			message = "gender should be enum of 'male'|'female'"
 		}
 
 		details = append(details, message)
@@ -126,6 +139,31 @@ func validateURL(fl validator.FieldLevel) bool {
 
 	// All checks passed, URL is valid
 	return true
+}
+
+func validateIDNum(fl validator.FieldLevel) bool {
+	idNum := strconv.Itoa(fl.Field().Interface().(int))
+	return len(idNum) == 16
+}
+
+func validatePhone(fl validator.FieldLevel) bool {
+	phone := fl.Field().String()
+	return phone[0:3] == "+62"
+}
+
+func validateGender(fl validator.FieldLevel) bool {
+	return constant.ValidGender[fl.Field().String()]
+}
+
+func validateDate(fl validator.FieldLevel) bool {
+	date := fl.Field().String()
+
+	for _, format := range constant.DateTime {
+		if _, err := time.Parse(format, date); err == nil {
+			return true
+		}
+	}
+	return false
 }
 
 func validateNipLen(fl validator.FieldLevel) bool {

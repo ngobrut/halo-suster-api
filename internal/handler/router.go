@@ -86,7 +86,7 @@ func InitHTTPHandler(cnf config.Config, uc usecase.IFaceUsecase) http.Handler {
 			medical.Use(middleware.Authorize(cnf.JWTSecret, nil))
 
 			medical.Route("/patient", func(patient chi.Router) {
-				// todo:
+				patient.Post("/", h.CreatePatient)
 			})
 
 			medical.Route("/record", func(record chi.Router) {
