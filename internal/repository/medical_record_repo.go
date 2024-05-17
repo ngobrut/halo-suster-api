@@ -34,7 +34,7 @@ func (r *Repository) CreateMedicalRecord(ctx context.Context, req *request.Creat
 	if err != nil {
 		if err == pgx.ErrNoRows {
 			err = custom_error.SetCustomError(&custom_error.ErrorContext{
-				HTTPCode: http.StatusBadRequest,
+				HTTPCode: http.StatusNotFound,
 				Message:  "identityNumber is not exist",
 			})
 		}
