@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -168,12 +169,12 @@ func validateDate(fl validator.FieldLevel) bool {
 
 func validateNipLen(fl validator.FieldLevel) bool {
 	nip := strconv.Itoa(fl.Field().Interface().(int))
-	return len(nip) == 13
+	return len(nip) >= 13 && len(nip) <= 15
 }
 
 func validateNipNurse(fl validator.FieldLevel) bool {
 	nip := strconv.Itoa(fl.Field().Interface().(int))
-	if len(nip) != 13 {
+	if len(nip) < 13 || len(nip) > 15 {
 		return false
 	}
 	if nip[0:3] != "303" {
@@ -182,21 +183,35 @@ func validateNipNurse(fl validator.FieldLevel) bool {
 	if nip[3:4] != "1" && nip[3:4] != "2" {
 		return false
 	}
-	if nip[4:8] < "2000" || nip[4:8] > "2024" {
+
+	yearStr := nip[4:8]
+	year, err := strconv.Atoi(yearStr)
+	if err != nil {
 		return false
 	}
-	if nip[8:10] < "01" || nip[8:10] > "12" {
+	currentYear := time.Now().Year()
+	if year < 2000 || year > currentYear {
 		return false
 	}
-	if nip[10:13] < "000" || nip[10:13] > "999" {
+
+	monthStr := nip[8:10]
+	month, err := strconv.Atoi(monthStr)
+	if err != nil {
 		return false
 	}
-	return true
+	if month < 1 || month > 12 {
+		return false
+	}
+
+	randomDigits := nip[10:]
+	randomDigitsPattern := `^\d{3,5}$`
+	match, _ := regexp.MatchString(randomDigitsPattern, randomDigits)
+	return match
 }
 
 func validateNipIt(fl validator.FieldLevel) bool {
 	nip := strconv.Itoa(fl.Field().Interface().(int))
-	if len(nip) != 13 {
+	if len(nip) < 13 || len(nip) > 15 {
 		return false
 	}
 	if nip[0:3] != "615" {
@@ -205,16 +220,31 @@ func validateNipIt(fl validator.FieldLevel) bool {
 	if nip[3:4] != "1" && nip[3:4] != "2" {
 		return false
 	}
-	if nip[4:8] < "2000" || nip[4:8] > "2024" {
+
+	yearStr := nip[4:8]
+	year, err := strconv.Atoi(yearStr)
+	if err != nil {
 		return false
 	}
-	if nip[8:10] < "01" || nip[8:10] > "12" {
+	currentYear := time.Now().Year()
+	if year < 2000 || year > currentYear {
 		return false
 	}
-	if nip[10:13] < "000" || nip[10:13] > "999" {
+
+	monthStr := nip[8:10]
+	month, err := strconv.Atoi(monthStr)
+	if err != nil {
 		return false
 	}
-	return true
+	if month < 1 || month > 12 {
+		return false
+	}
+
+	randomDigits := nip[10:]
+	randomDigitsPattern := `^\d{3,5}$`
+	match, _ := regexp.MatchString(randomDigitsPattern, randomDigits)
+	return match
+
 }
 
 func StringPtr(s string) *string {
