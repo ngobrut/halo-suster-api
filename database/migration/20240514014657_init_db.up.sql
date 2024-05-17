@@ -14,6 +14,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS user_nip_idx ON users (nip, role)
 WHERE
     (deleted_at IS NULL);
 
+CREATE INDEX IF NOT EXISTS user_name_idx ON users (name);
+CREATE INDEX IF NOT EXISTS user_role_idx ON users (role);
 
 CREATE TABLE IF NOT EXISTS patients (
     patient_id uuid default gen_random_uuid() not null constraint patients_pk primary key,
@@ -26,7 +28,10 @@ CREATE TABLE IF NOT EXISTS patients (
     created_at timestamp default now()
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS patients_number_idx ON patients (identity_number);
+CREATE UNIQUE INDEX IF NOT EXISTS patient_number_idx ON patients (identity_number);
+CREATE INDEX IF NOT EXISTS patient_phone_idx ON patients (phone);
+CREATE INDEX IF NOT EXISTS patient_name_idx ON patients (name);
+
 
 CREATE TABLE IF NOT EXISTS medical_records (
     id uuid default gen_random_uuid() not null constraint medical_records_pk primary key,
@@ -39,5 +44,5 @@ CREATE TABLE IF NOT EXISTS medical_records (
     constraint mr_user_fk foreign key (user_id) references users(user_id)
 );
 
-CREATE INDEX mr_patient_idx ON medical_records (patient_id);
-CREATE INDEX mr_user_idx ON medical_records (user_id);
+CREATE INDEX IF NOT EXISTS mr_patient_idx ON medical_records (patient_id);
+CREATE INDEX IF NOT EXISTS mr_user_idx ON medical_records (user_id);
