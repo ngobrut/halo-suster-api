@@ -46,7 +46,7 @@ func (h Handler) UpdateNurse(w http.ResponseWriter, r *http.Request) {
 	}
 
 	req.UserID = userID
-	req.Role = constant.StrUserRoleNurse
+	req.Role = constant.UserRoleNurse
 
 	err = h.uc.UpdateNurse(r.Context(), &req)
 	if err != nil {
@@ -95,7 +95,7 @@ func (h Handler) GrantNurseAccess(w http.ResponseWriter, r *http.Request) {
 	}
 
 	req.UserID = userID
-	req.Role = constant.StrUserRoleNurse
+	req.Role = constant.UserRoleNurse
 
 	err = h.uc.GrantNurseAccess(r.Context(), &req)
 	if err != nil {
