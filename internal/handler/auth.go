@@ -42,7 +42,7 @@ func (h Handler) LoginIT(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.ResponseOK(w, http.StatusCreated, res)
+	h.ResponseOK(w, http.StatusOK, res)
 }
 
 func (h Handler) GetProfileIT(w http.ResponseWriter, r *http.Request) {
