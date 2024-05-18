@@ -46,7 +46,7 @@ func (r *Repository) CreatePatient(ctx context.Context, data *model.Patient) (*m
 }
 
 func (r *Repository) FindPatients(ctx context.Context, params *request.ListPatientQuery) ([]*response.ListPatient, error) {
-	query := `SELECT identity_number::bigint as identity_number, phone, name, to_char(birth_date, 'YYYY-MM-DD HH24:MI:SS') as birth_date, gender, to_char(created_at, 'YYYY-MM-DD HH24:MI:SS') as created_at FROM patients`
+	query := `SELECT identity_number::bigint as identity_number, phone, name, to_char(birth_date, 'YYYY-MM-DD HH24:MI:SS.US') as birth_date, gender, to_char(created_at, 'YYYY-MM-DD HH24:MI:SS.US') as created_at FROM patients`
 
 	var clause = make([]string, 0)
 	var args = make([]interface{}, 0)

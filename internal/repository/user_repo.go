@@ -124,7 +124,7 @@ func (r *Repository) FindOneUserByID(ctx context.Context, userID uuid.UUID) (*mo
 
 // FindUsers implements IFaceRepository
 func (r *Repository) FindUsers(ctx context.Context, params *request.ListUserQuery) ([]*response.ListUser, error) {
-	query := `SELECT user_id, nip::bigint as nip, name, to_char(created_at, 'YYYY-MM-DD HH24:MI:SS') as created_at
+	query := `SELECT user_id, nip::bigint as nip, name, to_char(created_at, 'YYYY-MM-DD HH24:MI:SS.US') as created_at
 		FROM users WHERE deleted_at IS NULL`
 
 	var clause = make([]string, 0)
